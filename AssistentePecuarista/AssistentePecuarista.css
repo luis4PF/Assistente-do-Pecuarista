@@ -1,0 +1,80 @@
+html,
+body {
+    background: #f7fafc;
+}
+
+.card {
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .06);
+    padding: 1rem;
+}
+
+.badge {
+    display: inline-block;
+    padding: .15rem .5rem;
+    border-radius: .4rem;
+    font-size: .75rem;
+    font-weight: 600;
+}
+
+.hint {
+    font-size: .82rem;
+    color: #4b5563;
+}
+
+.hl {
+    background: #fef9c3;
+    padding: .1rem .35rem;
+    border-radius: .35rem;
+}
+
+.pill {
+    padding: .25rem .6rem;
+    border-radius: 9999px;
+    font-size: .75rem;
+    background: #eef2ff;
+    color: #3730a3;
+}
+
+.tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.tooltip:hover .tip {
+    display: block;
+}
+
+.tip {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    top: 120%;
+    left: 0;
+    min-width: 18rem;
+    background: #111827;
+    color: #fff;
+    padding: .5rem .75rem;
+    border-radius: .5rem;
+    font-size: .8rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
+}
+
+.tip b {
+    color: #facc15;
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    body {
+        background: #fff;
+    }
+
+    .card {
+        box-shadow: none;
+    }
+}
