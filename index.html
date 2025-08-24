@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Assistente do Pecuarista — Nutrição Bovina (Site Offline)</title>
+  <link rel="stylesheet" href="src/Tailwind.css">
+  <link rel="stylesheet" href="src/AssistentePecuarista.css">
+</head>
+
+<body class="min-h-screen">
+  <header class="bg-white border-b no-print">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <span class="text-2xl">🐄</span>
+        <h1 class="text-xl sm:text-2xl font-semibold text-gray-800">Assistente do Pecuarista — Nutrição Bovina (Site
+          Offline)</h1>
+      </div>
+      <nav class="hidden sm:flex items-center space-x-4 text-sm">
+        <a href="#" class="text-gray-600 hover:text-green-700" onclick="showTab('form')">Formulário</a>
+        <a href="#" class="text-gray-600 hover:text-green-700" onclick="showTab('ingredientes')">Ingredientes</a>
+        <a href="#" class="text-gray-600 hover:text-green-700" onclick="showTab('resultado')">Resultado</a>
+        <a href="#" class="text-gray-600 hover:text-green-700" onclick="showTab('consultoria')">Consultoria</a>
+        <a href="#" class="text-gray-600 hover:text-green-700" onclick="showTab('glossario')">Glossário</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-6 space-y-6">
+    <!-- Form -->
+    <section id="tab-form" class="card">
+      <h2 class="text-2xl font-bold text-green-800 mb-1">Dados do Lote (preencha do seu jeito, a gente te explica 😉)
+      </h2>
+      <p class="text-gray-600 mb-6">Tudo com palavras simples: se aparecer termo técnico, terá uma explicação do lado.
+      </p>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div>
+          <label class="block text-sm font-medium mb-1">Nome da Propriedade <span class="pill">Opcional</span></label>
+          <input id="propNome" class="w-full border rounded px-3 py-2" placeholder="Ex.: Fazenda Boa Água">
+          <p class="hint mt-1">Só para sair no relatório.</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Cidade/Estado <span class="pill">Opcional</span></label>
+          <input id="propLocal" class="w-full border rounded px-3 py-2" placeholder="Ex.: Regente Feijó - SP">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Número de animais no lote</label>
+          <input id="qtdAnimais" type="number" min="1" value="20" class="w-full border rounded px-3 py-2">
+          <p class="hint mt-1">Quantas cabeças estão juntas nesse manejo.</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-1">Categoria <span class="tooltip">❓<span
+                class="tip"><b>Categoria</b> é o tipo do animal no momento: <b>Bezerro</b> (novo), <b>Novilho</b>
+                (recria), <b>Boi</b> (engorda/terminação).</span></span></label>
+          <select id="categoria" class="w-full border rounded px-3 py-2">
+            <option value="">Selecione</option>
+            <option value="bezerro">Bezerro (novo)</option>
+            <option value="novilho">Novilho (recria)</option>
+            <option value="boi">Boi (engorda)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Peso médio (kg) <span class="tooltip">❓<span class="tip">Use uma
+                média. Não precisa ser exato. Se não sabe, chute um valor que pareça justo.</span></span></label>
+          <input id="peso" type="number" step="0.1" value="350" class="w-full border rounded px-3 py-2">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Ganho desejado (kg/dia) <span class="tooltip">❓<span
+                class="tip"><b>Ganho por dia</b> é quanto você quer que o boi aumente de peso por dia. Ex.: 1,0 quer
+                dizer ~1 kg/dia.</span></span></label>
+          <input id="gpd" type="number" step="0.1" value="1.0" class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-1">Tipo de pastagem <span class="tooltip">❓<span
+                class="tip">Escolha o que mais parece com sua área. Se for cocho/confinamento sem pasto, selecione
+                <b>Sem pasto</b>.</span></span></label>
+          <select id="pastoTipo" class="w-full border rounded px-3 py-2">
+            <option value="brachiaria">Braquiária (pasto mediano)</option>
+            <option value="panicum">Panicum/Mombaça/Zuri (pasto bom)</option>
+            <option value="sem_pasto">Sem pasto (confinamento)</option>
+          </select>
+          <p class="hint mt-1">Usamos valores padrão. Se tiver laudo do capim (análise), preencha os campos abaixo.</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">%PB do pasto <span class="tooltip">❓<span class="tip"><b>PB =
+                  Proteína</b> do pasto. Ajuda o boi a crescer. Se não souber, deixe como veio do tipo de
+                pasto.</span></span></label>
+          <input id="pastoPB" type="number" step="0.1" class="w-full border rounded px-3 py-2">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">ED do pasto (Mcal/kg MS) <span class="tooltip">❓<span
+                class="tip"><b>ED = Energia</b> que o pasto entrega. Pense como “combustível”.</span></span></label>
+          <input id="pastoED" type="number" step="0.01" class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-1">Matéria seca do pasto (%) <span class="tooltip">❓<span
+                class="tip"><b>MS</b> é a parte “seca” do alimento (sem água). Usamos MS para calcular com
+                segurança.</span></span></label>
+          <input id="pastoMS" type="number" step="0.1" class="w-full border rounded px-3 py-2">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Orçamento por animal/dia (R$) <span
+              class="pill">Opcional</span></label>
+          <input id="orcamento" type="number" step="0.01" class="w-full border rounded px-3 py-2"
+            placeholder="ex.: 6,00">
+          <p class="hint mt-1">Se preencher, a receita respeita esse teto.</p>
+        </div>
+        <div class="flex items-end">
+          <button class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold rounded px-4 py-2"
+            onclick="calcular()">Gerar Receita</button>
+        </div>
+      </div>
+
+      <p class="text-xs text-gray-500 mt-4">Dica do João: se tiver laudo do capim, use. Se não tiver, pode usar os
+        padrões do tipo de pastagem sem medo — depois ajustamos no campo.</p>
+    </section>
+
+    <!-- Ingredientes -->
+    <section id="tab-ingredientes" class="card hidden">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-2xl font-bold text-green-800">Ingredientes (você pode ajustar)</h2>
+        <button class="text-sm bg-gray-100 hover:bg-gray-200 border rounded px-3 py-1"
+          onclick="resetarIngredientes()">Restaurar Padrão</button>
+      </div>
+      <div class="overflow-auto">
+        <table class="min-w-full divide-y divide-gray-200 text-sm">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-3 py-2 text-left font-medium text-gray-700">Usar</th>
+              <th class="px-3 py-2 text-left font-medium text-gray-700">Nome</th>
+              <th class="px-3 py-2 text-right font-medium text-gray-700">PB % <span class="hl">proteína</span></th>
+              <th class="px-3 py-2 text-right font-medium text-gray-700">ED <span class="hl">energia</span></th>
+              <th class="px-3 py-2 text-right font-medium text-gray-700">MS % <span class="hl">parte seca</span></th>
+              <th class="px-3 py-2 text-right font-medium text-gray-700">Preço (R$/kg)</th>
+              <th class="px-3 py-2 text-left font-medium text-gray-700">Categoria</th>
+              <th class="px-3 py-2 text-left font-medium text-gray-700">Limites</th>
+            </tr>
+          </thead>
+          <tbody id="ingredientesBody" class="divide-y divide-gray-100"></tbody>
+        </table>
+      </div>
+      <div class="mt-4 text-xs text-gray-700">
+        <b>Notas simples:</b> Ureia máx. <b>1,0% da MS</b> (misture bem; adaptação devagar). Mineral típico <b>0,1–0,2%
+          da MS</b>.
+      </div>
+    </section>
+
+    <!-- Resultado -->
+    <section id="tab-resultado" class="card hidden">
+      <div class="flex items-center gap-3 mb-2">
+        <h2 class="text-2xl font-bold text-green-800">Resultado e Receita</h2>
+        <span id="badgeAtende" class="badge"></span>
+      </div>
+      <p class="text-gray-600 mb-4">Abaixo vai a <b>receita clara</b> para misturar no cocho, e o resumo do custo e
+        objetivos.</p>
+
+      <div id="resResumo" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"></div>
+
+      <div class="grid lg:grid-cols-2 gap-6">
+        <div class="space-y-6">
+          <div>
+            <h3 class="font-semibold text-gray-800 mb-2">Composição (Matéria Natural) — por animal/dia</h3>
+            <div class="overflow-auto">
+              <table class="min-w-full divide-y divide-gray-200 text-sm">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-3 py-2 text-left font-medium text-gray-700">Ingrediente</th>
+                    <th class="px-3 py-2 text-right font-medium text-gray-700">% da dieta</th>
+                    <th class="px-3 py-2 text-right font-medium text-gray-700">kg/animal/dia</th>
+                    <th class="px-3 py-2 text-right font-medium text-gray-700">R$/animal/dia</th>
+                  </tr>
+                </thead>
+                <tbody id="resTabela" class="divide-y divide-gray-100"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="font-semibold text-gray-800 mb-2">Receita de Mistura de Cocho</h3>
+            <p class="hint mb-2">Isso é a “fórmula do saco”: fácil de seguir. Inclui tudo que não é pasto.</p>
+            <div id="receitaCocho" class="text-sm"></div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-gray-800 mb-2">Indicadores</h3>
+          <ul id="resIndicadores" class="space-y-2 text-sm text-gray-800"></ul>
+          <div class="mt-4 flex gap-2 no-print">
+            <button class="bg-gray-900 text-white rounded px-4 py-2" onclick="window.print()">Imprimir/Salvar
+              PDF</button>
+            <button class="bg-green-700 text-white rounded px-4 py-2" onclick="showTab('consultoria')">Ver Manejo e
+              Dicas</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Consultoria prática -->
+    <section id="tab-consultoria" class="card hidden">
+      <h2 class="text-2xl font-bold text-green-800 mb-2">Como fazer na fazenda (passo a passo simples)</h2>
+      <ol class="list-decimal ml-5 space-y-2 text-sm text-gray-800">
+        <li><b>Cocho e saleiro cobertos.</b> Chuva estraga ração e mineral.</li>
+        <li><b>Água boa e sombra.</b> Sem isso, boi não come direito.</li>
+        <li><b>Mistura bem feita.</b> Use balde/caixa e mexa até ficar uniforme. <b>Ureia</b>: misture por último e bem
+          distribuída.</li>
+        <li><b>Adaptação devagar.</b> 3–5 dias aumentando aos poucos o suplemento. Se usar ureia, comece com 1/3 da
+          dose, depois 2/3, depois 100%.</li>
+        <li><b>Horário fixo.</b> Forneça sempre na mesma hora. Ajuda o consumo.</li>
+        <li><b>Quantidade.</b> Siga a receita “por animal/dia” e multiplique pelo número de cabeças. Ajuste olhando
+          sobras (um pouco de sobra é normal).</li>
+        <li><b>Segurança.</b> Nunca dê ureia pura. Não deixe animal com muita fome ir direto ao saleiro/ureia.</li>
+        <li><b>Controle simples.</b> Pese a mistura uma vez (use balança ou balde aferido). Anote o gasto diário e o
+          ganho estimado.</li>
+      </ol>
+
+      <div class="mt-6 grid md:grid-cols-2 gap-6">
+        <div class="card">
+          <h3 class="font-semibold text-gray-800 mb-2">Qual capim plantar (opções populares)</h3>
+          <ul class="list-disc ml-5 text-sm text-gray-800 space-y-1">
+            <li><b>Braquiária brizantha</b> (Marandu, Xaraés, Piatã): rústica, aguenta bem seca, manejo simples.</li>
+            <li><b>Panicum maximum</b> (Mombaça, Zuri): alta produção, exige adubação e manejo mais atento.</li>
+            <li><b>Massai</b>: boa cobertura e rebrota, manejo fácil.</li>
+            <li><b>Rotação de pasto</b>: dividir em piquetes e deixar descansar melhora muito o capim.</li>
+          </ul>
+          <p class="hint mt-2">Escolha pensando em solo, chuva e adubação que pretende usar.</p>
+        </div>
+        <div class="card">
+          <h3 class="font-semibold text-gray-800 mb-2">Suplementação recomendada</h3>
+          <p class="text-sm text-gray-800">O resultado do site já te mostra a <b>mistura do cocho</b>. Regra de ouro:
+          </p>
+          <ul class="list-disc ml-5 text-sm text-gray-800 space-y-1">
+            <li><b>Mineral sempre</b> (saleiro com cobertura).</li>
+            <li><b>Proteína</b> quando o capim está fraco/seco (PB baixa) — pode entrar ureia (com cuidado).</li>
+            <li><b>Energia</b> quando quer ganho mais alto (milho/casca de soja/silagem).</li>
+          </ul>
+          <p class="hint mt-2">Dúvida? Use a mistura “receita do saco” impressa e siga os passos acima.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Glossário -->
+    <section id="tab-glossario" class="card hidden">
+      <h2 class="text-2xl font-bold text-green-800 mb-2">Glossário (palavra difícil com explicação simples)</h2>
+      <dl class="grid md:grid-cols-2 gap-4 text-sm text-gray-800">
+        <div>
+          <dt class="font-semibold">PB (Proteína Bruta)</dt>
+          <dd>Parte do alimento que ajuda o boi a crescer. Quanto mais PB, mais “construção”.</dd>
+        </div>
+        <div>
+          <dt class="font-semibold">ED (Energia Digestível)</dt>
+          <dd>“Combustível” do alimento. Sem energia, o boi não engorda.</dd>
+        </div>
+        <div>
+          <dt class="font-semibold">MS (Matéria Seca)</dt>
+          <dd>O alimento sem água. Usamos MS para não errar na conta.</dd>
+        </div>
+        <div>
+          <dt class="font-semibold">GPD (Ganho por Dia)</dt>
+          <dd>Quanto o boi ganha de peso a cada dia.</dd>
+        </div>
+        <div>
+          <dt class="font-semibold">Ureia</dt>
+          <dd>Fonte barata de nitrogênio (proteína não verdadeira). Use bem misturada e nos limites.</dd>
+        </div>
+        <div>
+          <dt class="font-semibold">Mineral</dt>
+          <dd>Sais que o boi precisa sempre (cálcio, fósforo, etc.).</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="py-8 text-center text-xs text-gray-500">
+    © 2025 — Assistente do Pecuarista (Site Offline). Use como apoio. Sempre observe os animais e ajuste no manejo.
+  </footer>
+
+  <script src="src/AssistentePecuarista.js"></script>
+</body>
+</html>
